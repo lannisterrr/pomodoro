@@ -9,6 +9,7 @@ module.exports = {
       colors: {
         primary: '#4cc9f0',
         secondary: '#f72585',
+        overlay: 'rgba(0, 0, 0, 0.6)',
       },
     },
   },

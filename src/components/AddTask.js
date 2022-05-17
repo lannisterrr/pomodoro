@@ -1,6 +1,12 @@
+import { useState } from 'react';
 import { BsPlus, BsFillTrashFill } from 'react-icons/bs';
 import { FiEdit } from 'react-icons/fi';
+import Modal from './Modal';
 function AddTask() {
+  const [showModal, setShowModal] = useState(false);
+  const handleShowModal = toggle => {
+    setShowModal(toggle);
+  };
   return (
     <>
       <div className="w-screen flex-col justify-center items-center min-h-screen bg-primary">
@@ -10,7 +16,10 @@ function AddTask() {
         <main className="mx-auto flex-1 bg-white max-w-[90%] md:max-w-[80%] min-h-[70vh] rounded-lg">
           <div className="flex justify-between">
             <p className="font-mono p-2 text-xl font-bold"> To-Do List</p>
-            <CTAIcon icon={<BsPlus size="32" />} text="Add task" />
+            <CTAIcon
+              icon={<BsPlus size="32" onClick={() => handleShowModal(true)} />}
+              text="Add task"
+            />
           </div>
           <TODO />
           <TODO />
@@ -19,6 +28,7 @@ function AddTask() {
           <TODO />
         </main>
       </div>
+      {showModal && <Modal toggleModal={handleShowModal} />}
     </>
   );
 }
