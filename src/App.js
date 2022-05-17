@@ -1,9 +1,10 @@
 import './App.css';
+import AddTask from './components/AddTask';
 
 function App() {
   return (
     <div className="App">
-      <h2 className="text-green-500">Pomodoro APP</h2>
+      <AddTask />
     </div>
   );
 }
