@@ -5,6 +5,7 @@ import { TODO } from './TODO';
 import Modal from './Modal';
 function AddTask() {
   const [curr_todo, setCurr_todo] = useState({});
+  console.log(curr_todo);
   const [showModal, setShowModal] = useState(false);
   const { state } = usePomodoroContext();
 
