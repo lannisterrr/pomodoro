@@ -12,7 +12,13 @@ function Modal({ toggleModal, curr_todo, setCurr_todo }) {
   };
 
   const handleTodoSave = () => {
-    console.log(curr_todo.id);
+    if (!curr_todo.title || !curr_todo.description || !curr_todo.userTime) {
+      dispatch({ type: 'ERROR_SHOW', payload: true });
+      setTimeout(() => {
+        dispatch({ type: 'ERROR_SHOW', payload: false });
+      }, 1200);
+      return;
+    }
     if (curr_todo.id) {
       dispatch({ type: 'EDIT_TODO', payload: curr_todo });
     } else {
@@ -92,6 +98,11 @@ function Modal({ toggleModal, curr_todo, setCurr_todo }) {
                 Save Changes
               </button>
             </div>
+            {state.errorShow && (
+              <p className="text-red-700 p-2 text-center font-extrabold">
+                Please Fill all the values
+              </p>
+            )}
           </div>
         </div>
       </div>

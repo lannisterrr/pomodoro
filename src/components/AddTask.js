@@ -30,17 +30,21 @@ function AddTask() {
               text="Add task"
             />
           </div>
-          {state.tasks.map(task => (
-            <TODO
-              key={task.id}
-              taskName={task.title}
-              toggleModal={handleShowModal}
-              taskId={task.id}
-              task={task}
-              curr_todo={curr_todo}
-              setCurr_todo={setCurr_todo}
-            />
-          ))}
+          {state.tasks.length > 0 ? (
+            state.tasks.map(task => (
+              <TODO
+                key={task.id}
+                toggleModal={handleShowModal}
+                task={task}
+                curr_todo={curr_todo}
+                setCurr_todo={setCurr_todo}
+              />
+            ))
+          ) : (
+            <p className="text-red-500 text-center font-extrabold text-lg">
+              You have not added any task
+            </p>
+          )}
         </main>
       </div>
       {showModal && (

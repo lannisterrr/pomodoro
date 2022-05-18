@@ -22,12 +22,28 @@ const stateReducer = (state, action) => {
       const selectedTask = state.tasks.map(task =>
         task.id === action.payload.id ? action.payload : task
       );
-      console.log(selectedTask);
 
       return {
         ...state,
         tasks: selectedTask,
       };
+
+    case 'ERROR_SHOW':
+      return {
+        ...state,
+        errorShow: action.payload,
+      };
+
+    case 'DELETE_TODO':
+      const updatedTasks = state.tasks.filter(
+        task => task.id !== action.payload
+      );
+      console.log(updatedTasks, 'context');
+      return {
+        ...state,
+        tasks: updatedTasks,
+      };
+
     default:
       throw new Error(`Unknown action type: ${action.type}`);
   }
