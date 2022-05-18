@@ -1,6 +1,27 @@
+import { v4 as uuid } from 'uuid';
 import reactDom from 'react-dom';
-import { FaUserCircle } from 'react-icons/fa';
-function Modal({ toggleModal }) {
+import { usePomodoroContext } from '../context/state-context';
+
+function Modal({ toggleModal, curr_todo, setCurr_todo }) {
+  const { state, dispatch } = usePomodoroContext();
+
+  const handleInputChange = e => {
+    const name = e.target.name;
+    const value = e.target.value;
+    setCurr_todo(prevTodo => ({ ...prevTodo, [name]: value }));
+  };
+
+  const handleTodoSave = () => {
+    console.log(curr_todo.id);
+    if (curr_todo.id) {
+      dispatch({ type: 'EDIT_TODO', payload: curr_todo });
+    } else {
+      dispatch({ type: 'SAVE_TODO', payload: { id: uuid(), ...curr_todo } });
+    }
+    setCurr_todo({});
+    toggleModal(false);
+  };
+
   return reactDom.createPortal(
     <>
       <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
@@ -26,7 +47,10 @@ function Modal({ toggleModal }) {
                 <input
                   id="title"
                   type="text"
+                  value={curr_todo.title ?? ''}
                   className="p-2  border-[1px] border-gray-400  outline-gray-400"
+                  onChange={handleInputChange}
+                  name="title"
                   placeholder="Add title...."
                 />
                 <label htmlFor="description">Description :</label>
@@ -35,12 +59,18 @@ function Modal({ toggleModal }) {
                   id="description"
                   placeholder="Add description..."
                   rows="5"
+                  value={curr_todo.description ?? ''}
+                  onChange={handleInputChange}
+                  name="description"
                 ></textarea>
                 <label htmlFor="time"> Time : </label>
                 <input
                   id="time"
                   type="text"
                   className="p-2  border-[1px] border-gray-400 outline-gray-400"
+                  value={curr_todo.userTime ?? ''}
+                  onChange={handleInputChange}
+                  name="userTime"
                   placeholder="Add time...."
                 />
               </div>
@@ -57,6 +87,7 @@ function Modal({ toggleModal }) {
               <button
                 className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                 type="button"
+                onClick={handleTodoSave}
               >
                 Save Changes
               </button>
