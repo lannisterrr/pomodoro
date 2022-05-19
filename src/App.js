@@ -5,7 +5,7 @@ import TaskPage from './pages/TaskPage';
 
 function App() {
   return (
-    <div className="App">
+    <div className="App overflow-x-hidden">
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/task/:taskId" element={<TaskPage />} />

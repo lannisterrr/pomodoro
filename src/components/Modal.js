@@ -11,6 +11,14 @@ function Modal({ toggleModal, curr_todo, setCurr_todo }) {
     setCurr_todo(prevTodo => ({ ...prevTodo, [name]: value }));
   };
 
+  let today = new Date();
+  const dd = String(today.getDate()).padStart(2, '0');
+  const mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+  const yyyy = today.getFullYear();
+
+  today = dd + '/' + mm + '/' + yyyy;
+
+  console.log(today);
   const handleTodoSave = () => {
     if (!curr_todo.title || !curr_todo.description || !curr_todo.userTime) {
       dispatch({ type: 'ERROR_SHOW', payload: true });
@@ -22,7 +30,10 @@ function Modal({ toggleModal, curr_todo, setCurr_todo }) {
     if (curr_todo.id) {
       dispatch({ type: 'EDIT_TODO', payload: curr_todo });
     } else {
-      dispatch({ type: 'SAVE_TODO', payload: { id: uuid(), ...curr_todo } });
+      dispatch({
+        type: 'SAVE_TODO',
+        payload: { id: uuid(), createdAt: today, ...curr_todo },
+      });
     }
     setCurr_todo({});
     toggleModal(false);
