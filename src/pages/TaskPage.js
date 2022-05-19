@@ -1,10 +1,21 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { usePomodoroContext } from '../context/state-context';
+import { CircularProgressbar } from 'react-circular-progressbar';
+import 'react-circular-progressbar/dist/styles.css';
+import { CountdownCircleTimer } from 'react-countdown-circle-timer';
+
+const children = ({ remainingTime }) => {
+  const minutes = Math.floor(remainingTime / 60);
+  const seconds = remainingTime % 60;
+
+  return `${minutes}:${seconds}`;
+};
 
 function TaskPage() {
   const { taskId } = useParams();
   const { state } = usePomodoroContext();
+  const [key, setKey] = useState(0);
 
   function getTaskDetails(tasks, taskId) {
     return tasks.find(task => task.id === taskId);
@@ -13,70 +24,52 @@ function TaskPage() {
   const timerTime = Number(task.userTime);
 
   const [startTimer, setStartTimer] = useState(false);
-  const [minutes, setMinutes] = useState(timerTime);
-  const [seconds, setSeconds] = useState(0);
-
-  useEffect(() => {
-    if (startTimer) {
-      let myInterval = setInterval(() => {
-        if (seconds > 0) {
-          setSeconds(seconds - 1);
-        }
-        if (seconds === 0) {
-          if (minutes === 0) {
-            clearInterval(myInterval);
-          } else {
-            setMinutes(minutes - 1);
-            setSeconds(59);
-          }
-        }
-      }, 1000);
-      return () => {
-        clearInterval(myInterval);
-      };
-    }
-  });
 
   const handleStartTimer = () => {
     setStartTimer(true);
   };
 
   const handleReset = () => {
-    setMinutes(timerTime);
-    setSeconds(0);
+    setKey(prevKey => prevKey + 1);
     setStartTimer(false);
   };
 
   return (
     <div className="w-screen  min-h-screen bg-primary pt-8 ">
       <main className="mx-auto flex-1 bg-white max-w-[90%] md:max-w-[80%] min-h-[100vh] rounded-2xl grid grid-cols-2 ">
-        <div className="p-4">
-          <h3>
-            Timer : {minutes}: {seconds}
-          </h3>
-          <button
-            className="bg-primary text-white font-bold uppercase text-sm px-3 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 mt-3 ease-linear transition-all duration-150"
-            type="button"
-            onClick={handleStartTimer}
+        <div className="p-4 flex flex-col justify-center items-center">
+          <CountdownCircleTimer
+            key={key}
+            isPlaying={startTimer}
+            duration={timerTime * 60}
+            colors={['#004777', '#F7B801', '#A30000', '#A30000']}
+            colorsTime={[10, 6, 3, 0]}
           >
-            Start Timer
-          </button>
-
-          <button
-            className="bg-secondary text-white font-bold uppercase text-sm px-3 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 mt-3 ease-linear transition-all duration-150"
-            type="button"
-            onClick={() => setStartTimer(false)}
-          >
-            Pause Timer
-          </button>
-
-          <button
-            className="bg-emerald-500 text-white font-bold uppercase text-sm px-3 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 mt-3 ease-linear transition-all duration-150"
-            type="button"
-            onClick={handleReset}
-          >
-            Reset
-          </button>
+            {children}
+          </CountdownCircleTimer>
+          <div className="flex pt-20 gap-4">
+            <button
+              className="bg-primary text-white font-bold uppercase text-sm px-3 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 mt-3 ease-linear transition-all duration-150"
+              type="button"
+              onClick={handleStartTimer}
+            >
+              Start Timer
+            </button>
+            <button
+              className="bg-secondary text-white font-bold uppercase text-sm px-3 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 mt-3 ease-linear transition-all duration-150"
+              type="button"
+              onClick={() => setStartTimer(false)}
+            >
+              Pause Timer
+            </button>
+            <button
+              className="bg-emerald-500 text-white font-bold uppercase text-sm px-3 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 mt-3 ease-linear transition-all duration-150"
+              type="button"
+              onClick={handleReset}
+            >
+              Reset
+            </button>
+          </div>
         </div>
         <div className="p-2 flex flex-col">
           <h1 class="text-2xl md:text-5xl p-4 font-normal leading-normal mt-0 mb-2 text-secondary text-center mt-10">
