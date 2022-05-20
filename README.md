@@ -19,7 +19,6 @@
 
 - [React JS](https://reactjs.org/)
 - [tailwind](https://tailwindcss.com/)
-- CSS
 - [React Router v6](https://reactrouter.com/)
 
 ---
