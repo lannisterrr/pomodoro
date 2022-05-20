@@ -32,7 +32,12 @@ function Modal({ toggleModal, curr_todo, setCurr_todo }) {
     } else {
       dispatch({
         type: 'SAVE_TODO',
-        payload: { id: uuid(), createdAt: today, ...curr_todo },
+        payload: {
+          id: uuid(),
+          createdAt: today,
+          completed: false,
+          ...curr_todo,
+        },
       });
     }
     setCurr_todo({});
