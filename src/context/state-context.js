@@ -42,6 +42,18 @@ const stateReducer = (state, action) => {
         tasks: updatedTasks,
       };
 
+    case 'TOGGLE_COMPLETE':
+      const updatedCompletedTask = state.tasks.map(task => {
+        console.log(task);
+        return task.id === action.payload
+          ? { ...task, completed: !task.completed }
+          : { ...task };
+      });
+      console.log(updatedCompletedTask);
+      return {
+        ...state,
+        tasks: updatedCompletedTask,
+      };
     default:
       throw new Error(`Unknown action type: ${action.type}`);
   }
@@ -49,7 +61,6 @@ const stateReducer = (state, action) => {
 
 const StateProvider = ({ children }) => {
   const [state, dispatch] = useReducer(stateReducer, initialState);
-  console.log(state.title);
   const contextValue = {
     state,
     dispatch,

@@ -1,22 +1,16 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { usePomodoroContext } from '../context/state-context';
-import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import { CountdownCircleTimer } from 'react-countdown-circle-timer';
-
-const children = ({ remainingTime }) => {
-  const minutes = Math.floor(remainingTime / 60);
-  const seconds = remainingTime % 60;
-
-  return `${minutes}:${seconds}`;
-};
-
+import { Helmet } from 'react-helmet';
 function TaskPage() {
   const { taskId } = useParams();
   const { state } = usePomodoroContext();
   const [key, setKey] = useState(0);
-
+  const [timerDone, setTimerDone] = useState(false);
+  const [tabTime, setTabTime] = useState('');
+  console.log(tabTime);
   function getTaskDetails(tasks, taskId) {
     return tasks.find(task => task.id === taskId);
   }
@@ -32,10 +26,26 @@ function TaskPage() {
   const handleReset = () => {
     setKey(prevKey => prevKey + 1);
     setStartTimer(false);
+    setTimerDone(false);
+  };
+
+  const children = ({ remainingTime }) => {
+    const minutes = Math.floor(remainingTime / 60);
+    const seconds = remainingTime % 60;
+    setTabTime(`${minutes} : ${seconds}`);
+
+    if (timerDone) {
+      return 'Timer ended';
+    } else {
+      return `${minutes}:${seconds} out of ${timerTime} `;
+    }
   };
 
   return (
     <div className="w-screen  min-h-screen bg-primary pt-8 ">
+      <Helmet>
+        <title>{tabTime}</title>
+      </Helmet>
       <main className="mx-auto flex-1 bg-white max-w-[90%] md:max-w-[80%] min-h-[100vh] rounded-2xl grid grid-cols-2 ">
         <div className="p-4 flex flex-col justify-center items-center">
           <CountdownCircleTimer
@@ -44,6 +54,9 @@ function TaskPage() {
             duration={timerTime * 60}
             colors={['#004777', '#F7B801', '#A30000', '#A30000']}
             colorsTime={[10, 6, 3, 0]}
+            onComplete={() => {
+              setTimerDone(true);
+            }}
           >
             {children}
           </CountdownCircleTimer>
