@@ -5,7 +5,6 @@ import { TODO } from './TODO';
 import Modal from './Modal';
 function AddTask() {
   const [curr_todo, setCurr_todo] = useState({});
-  console.log(curr_todo);
   const [showModal, setShowModal] = useState(false);
   const { state } = usePomodoroContext();
 
@@ -19,7 +18,7 @@ function AddTask() {
 
   return (
     <>
-      <div className="w-screen flex-col justify-center items-center min-h-screen bg-primary">
+      <div className="w-screen  min-h-screen bg-primary">
         <h1 class="text-3xl md:text-5xl p-4 font-normal leading-normal mt-0 mb-2 text-secondary text-center">
           Schedule your tasks right now!!
         </h1>

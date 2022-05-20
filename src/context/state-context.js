@@ -1,5 +1,3 @@
-import { v4 as uuid } from 'uuid';
-
 import { useContext, createContext, useReducer, useState } from 'react';
 
 const stateContext = createContext({});
